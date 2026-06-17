@@ -1,0 +1,15 @@
+============================================================
+ADS-B Decode Log - SNR = 5 dB
+============================================================
+
+[Preamble Detection]
+  Position: 0
+  Matches: 16/16
+
+[BER Statistics]
+  Total bits: 128
+  Error bits: 4
+  BER: 0.031250
+
+[Message Decoding]
+  CRC: FAIL

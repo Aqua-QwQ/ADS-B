@@ -1,0 +1,21 @@
+============================================================
+ADS-B Decode Log - SNR = 20 dB
+============================================================
+
+[Preamble Detection]
+  Position: 0
+  Matches: 16/16
+
+[BER Statistics]
+  Total bits: 128
+  Error bits: 0
+  BER: 0.000000
+
+[Message Decoding]
+  CRC: PASS
+  ICAO: 0xabcdef
+  Altitude: 3000 ft
+  Speed: 220 knots
+  Heading: 80.16 deg
+  Latitude: 39.85 deg
+  Longitude: 116.3 deg
