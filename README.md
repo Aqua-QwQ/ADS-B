@@ -34,7 +34,16 @@ pip install numpy matplotlib
 
 ## 一键运行
 
-推荐直接运行：
+项目提供两种一键运行方式：
+
+```text
+run_all.py     固定配置/固定轨迹运行，适合复现实验结果
+run_random.py  随机生成单帧飞机状态运行，适合测试不同输入数据
+```
+
+### 固定配置运行
+
+推荐先运行：
 
 ```bash
 python code/run_all.py
@@ -77,6 +86,41 @@ python code/run_all.py --seed 123
 ```
 
 运行结束后，终端会输出各 SNR 下的前导码匹配、BER 和 CRC 结果。
+
+### 随机数据运行
+
+如果希望每次随机生成飞机状态并运行完整链路，使用：
+
+```bash
+python code/run_random.py
+```
+
+该脚本会随机生成一组合法飞机状态，包括 ICAO 地址、高度、速度、航向、经纬度等，然后自动执行：
+
+```text
+随机飞机状态 -> ADS-B 报文 -> PPM 调制 -> AWGN 信道 -> 接收端解调和 BER 统计
+```
+
+常用示例：
+
+```bash
+# 每次使用新的随机飞机状态
+python code/run_random.py
+
+# 固定随机种子，便于复现实验
+python code/run_random.py --seed 1234
+
+# 固定飞机状态种子，同时改变信道噪声种子
+python code/run_random.py --seed 1234 --channel-seed 5678
+
+# 指定 SNR
+python code/run_random.py --seed 1234 --snr 30 20 10 5 0
+
+# 不重新生成接收波形/频谱图
+python code/run_random.py --seed 1234 --no-plots
+```
+
+`--seed` 控制随机飞机状态，`--channel-seed` 控制 AWGN 噪声。两个 seed 分开设计，方便区分“输入数据随机性”和“信道噪声随机性”。
 
 ## 分步运行
 
@@ -165,8 +209,10 @@ ADS-B/
 │   ├── awgn_channel.py        # 纯 Python AWGN 信道批处理
 │   ├── receiver.py            # PPM 解调、前导码检测、CRC 校验、BER 统计
 │   ├── run_all.py             # 一键运行入口
+│   ├── run_random.py          # 随机飞机状态一键运行入口
 │   ├── test_adsb_frame.py     # 协议层单元测试
 │   ├── test_awgn_channel.py   # AWGN 信道单元测试
+│   ├── test_run_random.py     # 随机状态生成测试
 │   └── test_interface.py      # 成员接口适配检查
 ├── config/
 │   └── aircraft_scenario.json # 多帧飞机轨迹配置
@@ -252,6 +298,12 @@ r = s + n
 
 其中 `s` 是发送采样，`n` 是按指定 SNR 生成的高斯噪声。
 
+### `run_all.py` 和 `run_random.py`
+
+`run_all.py` 用固定配置运行整个系统，默认使用 `config/aircraft_scenario.json` 生成多帧轨迹，并刷新单帧接口文件。
+
+`run_random.py` 用随机生成的单帧飞机状态运行整个系统，适合检查系统对不同输入状态的适配能力。输出会覆盖同名的 `data/tx_*`、`data/rx_samples_snr*.dat`、`results/ber_stat.csv` 和相关图像。
+
 ### `receiver.py`
 
 负责接收端处理：
@@ -280,6 +332,12 @@ python code/test_adsb_frame.py
 python code/test_awgn_channel.py
 ```
 
+运行随机数据生成测试：
+
+```bash
+python code/test_run_random.py
+```
+
 运行接口检查：
 
 ```bash
@@ -299,3 +357,30 @@ SNR_dB,BER,Errors,Total_Bits,CRC_OK
 ```
 
 由于每个 SNR 默认只统计一帧 128 bit，该 BER 是单次实验观测值；如果需要更稳定的 BER 曲线，应增加多帧统计或 Monte Carlo 仿真。
+
+随机数据运行示例：
+
+```bash
+python code/run_random.py --seed 1234
+```
+
+该示例生成的飞机状态摘要如下：
+
+```text
+ICAO: 0xfa08fe
+Altitude: 100275 ft
+Speed: 1011 kt
+Heading: 332.37 deg
+Latitude: -42.8954
+Longitude: -65.1251
+```
+
+对应一次运行的 BER 结果示例：
+
+```text
+SNR_dB,BER,Errors,Total_Bits,CRC_OK
+20,0.000000,0,128,Yes
+10,0.000000,0,128,Yes
+5,0.031250,4,128,No
+0,0.195312,25,128,No
+```

@@ -8,8 +8,8 @@ ADS-B Decode Log - SNR = 0 dB
 
 [BER Statistics]
   Total bits: 128
-  Error bits: 20
-  BER: 0.156250
+  Error bits: 25
+  BER: 0.195312
 
 [Message Decoding]
   CRC: FAIL

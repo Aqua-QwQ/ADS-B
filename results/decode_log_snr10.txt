@@ -13,9 +13,9 @@ ADS-B Decode Log - SNR = 10 dB
 
 [Message Decoding]
   CRC: PASS
-  ICAO: 0xabcdef
-  Altitude: 3000 ft
-  Speed: 220 knots
-  Heading: 80.16 deg
-  Latitude: 39.85 deg
-  Longitude: 116.3 deg
+  ICAO: 0xfa08fe
+  Altitude: 100275 ft
+  Speed: 1011 knots
+  Heading: 332.58 deg
+  Latitude: -42.84 deg
+  Longitude: -65.28 deg
