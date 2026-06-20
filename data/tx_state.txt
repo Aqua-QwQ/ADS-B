@@ -1,0 +1,11 @@
+# virtual aircraft state (member-2 compatible)
+df=17
+ca=5
+icao=11259375 (0xabcdef)
+type_code=19
+altitude=3000.0
+speed=220.0
+heading=80.0
+latitude=39.90017674455551
+longitude=116.40130658722182
+time_s=0.0

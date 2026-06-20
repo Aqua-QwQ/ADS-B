@@ -1,0 +1,21 @@
+{
+    "icao": 11259375,
+    "df": 17,
+    "ca": 5,
+    "type_code": 19,
+
+    "num_frames": 20,
+    "frame_interval_s": 1.0,
+
+    "initial_altitude_ft": 3000.0,
+    "vertical_rate_fpm": 600.0,
+
+    "initial_speed_kt": 220.0,
+    "acceleration_ktps": 0.2,
+
+    "initial_heading_deg": 80.0,
+    "turn_rate_dps": 1.5,
+
+    "initial_latitude_deg": 39.9000,
+    "initial_longitude_deg": 116.4000
+}
